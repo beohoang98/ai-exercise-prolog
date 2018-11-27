@@ -1,0 +1,5 @@
+animal(X).
+fly(X).
+food(X).
+swim(X).
+seafood(X).
