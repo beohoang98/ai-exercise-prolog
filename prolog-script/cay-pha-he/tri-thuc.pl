@@ -108,42 +108,41 @@ female('Mia Grace Tindall').
 
 
 % ========== MOI QUAN HE =======
-child(X, Y):- parent(Y, X).
+child(Child, Parent):- parent(Parent, Child).
 
-son(X, Y)       :- parent(Y, X), male(X).
-daughter(X, Y)  :- parent(Y, X), female(X).
+son(Child, Parent)       :- parent(Parent, Child), male(Child).
+daughter(Child, Parent)  :- parent(Parent, Child), female(Child).
 
-mother(X, Y):- parent(X, Y), female(X).
-father(X, Y):- parent(X, Y), male(X).
+mother(Parent, Child):- parent(Parent, Child), female(Parent).
+father(Parent, Child):- parent(Parent, Child), male(Parent).
 
-husband(X, Y)   :- male(X), female(Y), married(X, Y), not(divorced(X, Y)).
-wife(X, Y)      :- female(X), male(Y), married(X, Y), not(divorced(X, Y)).
+husband(Person, Wife)   :- male(Person), female(Wife), married(Person, Wife), not(divorced(Person, Wife)).
+wife(Person, Husband)   :- female(Person), male(Husband), married(Person, Husband), not(divorced(Person, Husband)).
 
-grandparent(X,Z) :- parent(X,Y), parent(Y, Z).
+grandparent(GP,GC) :- parent(GP,X), parent(X, GC).
 
-grandfather(X,Z) :- grandparent(X,Z),male(X).
-grandmother(X,Z) :- grandparent(X,Z),female(X).
+grandfather(GP,GC) :- grandparent(GP,GC),male(GP).
+grandmother(GP,GC) :- grandparent(GP,GC),female(GP).
 
-grandson(X,Z) :- grandchild(X,Z), male(X).
-granddaughter(X,Z) :- grandchild(X,Z), female(X).
-
-grandchild(X,Z) :- grandparent(Z,X).
+grandchild(GC,GP) :- grandparent(GP,GC).
+grandson(GC,GP) :- grandchild(GC,GP), male(GC).
+granddaughter(GC,GP) :- grandchild(GC,GP), female(GC).
 
 sibling(X,Y) :- 
-    mother(Z,X), mother(Z,Y),
-    father(M,X), father(M,Y),
+    mother(Mother,X), mother(Mother,Y),
+    father(Father,X), father(Father,Y),
     X \= Y.
 
 brother(X,Y) :- sibling(X,Y), male(X).
 sister(X,Y) :- sibling(X,Y), female(X).
 
-aunt(X,Y) :-parent(Z,Y),sibling(Z,X),female(X).
-uncle(X,Y) :-parent(Z,Y),sibling(Z,X),male(X).
+aunt(Person,NieceNephew) :-parent(X,NieceNephew),sibling(X,Person),female(Person).
+uncle(Person,NieceNephew) :-parent(X,NieceNephew),sibling(X,Person),male(Person).
 
-niece(X,Y) :-
-    aunt(Y, X), female(X);
-    uncle(Y, X), female(X).
+niece(Person,AuntUncle) :-
+    aunt(AuntUncle, Person), female(Person);
+    uncle(AuntUncle, Person), female(Person).
 
-nephew(X,Y) :-
-    aunt(Y, X), male(X);
-    uncle(Y, X), male(X).
+nephew(Person,AuntUncle) :-
+    aunt(AuntUncle, Person), male(Person);
+    uncle(AuntUncle, Person), male(Person).
